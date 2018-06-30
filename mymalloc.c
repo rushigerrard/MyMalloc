@@ -53,3 +53,32 @@ void *mymalloc(size_t no_of_bytes){
 	}
 }
 
+void myfree(void* ptr){
+	
+	int start_address = memory;
+	int end_address = memory + MAX_SIZE;
+	printf("start address : %d\tend address : %d\n",start_address,end_address);	
+	if(start_address > ptr || end_address < ptr){	
+		printf("Cannot free memory at address : %d\n",ptr);
+		return ;
+	}
+	block *current = (block *)ptr;
+	block *metadata = current--;
+	printf("Freeing memory at address : %d\n",metadata);
+	metadata->free = 1;
+	merge();
+}
+//merge the consecutive free blocks
+void merge(){
+	block *curr,*prev;
+	curr = free_list;
+	while(curr != NULL && curr->next != NULL){
+		if(curr->next->free == 1){
+			printf("Blocks with address %d and %d will be merged\n",curr,curr->next);
+			curr->size = curr->size + curr->next->size + sizeof(block);
+			curr->next = curr->next->next;
+		}else{
+			curr = curr->next;
+		}
+	}
+}

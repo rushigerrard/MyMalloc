@@ -17,6 +17,6 @@ block *free_list = (void *) memory;
 void initialize();
 void split(block *fitting_slot, size_t size);
 void *mymalloc(size_t no_of_bytes);
-//void merge();
-//void myfree(void* ptr);
+void merge();
+void myfree(void* ptr);
 
